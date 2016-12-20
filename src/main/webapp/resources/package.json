@@ -1,0 +1,31 @@
+{
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings"
+  },
+  "dependencies": {    
+	"@angular/common": "~2.1.0",
+    "@angular/compiler": "~2.1.0",
+    "@angular/core": "~2.1.0",
+    "@angular/forms": "~2.1.0",
+    "@angular/http": "~2.1.0",
+    "@angular/platform-browser": "~2.1.0",
+    "@angular/platform-browser-dynamic": "~2.1.0",
+    "@angular/router": "~3.1.0",
+    "@angular/upgrade": "~2.1.0",	
+    "core-js": "^2.4.1",
+    "moment": "^2.15.1",
+    "ng2-bootstrap": "^1.1.11",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "systemjs": "0.19.39",
+    "ui-router-ng1-to-ng2": "^1.0.10",
+    "ui-router-ng2": "^1.0.0-beta.1",
+    "zone.js": "^0.6.25"	
+  },
+  "devDependencies": {
+    "typescript": "^2.0.3",
+    "typings": "^1.4.0"
+  }
+}
