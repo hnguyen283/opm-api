@@ -227,7 +227,7 @@
 	            <version>2.1.1</version>
 	            <configuration>
 	              <outputDirectory>deployments</outputDirectory>
-	              <warName>opm</warName>
+	              <warName>opm-api</warName>
 	            </configuration>
 	          </plugin>
 	        </plugins>
