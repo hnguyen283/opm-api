@@ -12,8 +12,9 @@
 	<!-- 	MongoDB Config -->
 <!-- 	<mongo:mongo host="localhost" port="27017" /> -->
 <!-- 	<mongo:db-factory dbname="opmdrive" mongo-ref="mongo"/> -->
-
-	<mongo:db-factory client-uri="mongodb://hnguyen283:Lang122131@ds044699.mlab.com:44699/opm" />
+<!-- 	<mongo:db-factory id="mongo" host="localhost" port="27017" dbname="opmdrive" username="hnguyen283" password="langthuy"/> -->
+	
+	<mongo:db-factory client-uri="mongodb://hnguyen283:langthuy@mongo/opmdrive" />
 
 	<bean id="mongoOperation" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
