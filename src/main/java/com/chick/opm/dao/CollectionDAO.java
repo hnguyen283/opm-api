@@ -26,6 +26,7 @@ import com.mongodb.BasicDBObject;
 public class CollectionDAO extends DAOAbtract implements DAOInter {
 
 	private static final Logger logger = Logger.getLogger(LoadAPI.class);
+	private static CollectionDAO collectionDAO;
 	
 	@Autowired
 	@Qualifier("CommonService")
@@ -34,6 +35,17 @@ public class CollectionDAO extends DAOAbtract implements DAOInter {
 	@Autowired
 	@Qualifier("ResponeMessageService")
 	private ResponeMessageService responeMessageService;
+	
+	public CollectionDAO(){
+		CollectionDAO.collectionDAO = this;
+	}
+	
+	public static CollectionDAO getInstance(){
+		if(CollectionDAO.collectionDAO==null){
+			CollectionDAO.collectionDAO = new CollectionDAO();
+		}
+		return CollectionDAO.collectionDAO;
+	}
 	
 	/* 
 	 * Description: This function to get collections from database by collection name

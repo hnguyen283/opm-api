@@ -39,6 +39,9 @@ public class CommonService {
 	
 	public Data ReadConverter (BasicDBObject basicDBObject, String ObName){
 		try {
+			if(this.dao==null){
+				this.dao=CollectionDAO.getInstance();
+			}
 			Data data = new Data();
 			data.setObName(ObName);
 			if (basicDBObject.containsKey(CLASS_FIELD)){
@@ -80,7 +83,7 @@ public class CommonService {
 						if(list.size() != 0){
 							Data [] holderList = new Data [list.size()];
 							if(list.get(0) instanceof ObjectId){
-								for(int i = 0; i < list.size(); i++){
+								for(int i = 0; i < list.size(); i++){									
 									holderList[i]=dao.getById(((ObjectId)list.get(i)).toHexString(), keyName);
 								}
 								data.addChild(holderList);	
