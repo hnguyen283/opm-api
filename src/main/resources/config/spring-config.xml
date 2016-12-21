@@ -10,11 +10,11 @@
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<!-- 	MongoDB Config -->
-<!-- 	<mongo:mongo host="localhost" port="27017" /> -->
+<!-- 	<mongo:mongo host="10.1.79.17" port="27017" /> -->
 <!-- 	<mongo:db-factory dbname="opmdrive" mongo-ref="mongo"/> -->
 <!-- 	<mongo:db-factory id="mongo" host="localhost" port="27017" dbname="opmdrive" username="hnguyen283" password="langthuy"/> -->
 	
-	<mongo:db-factory client-uri="mongodb://hnguyen283:langthuy@mongo/opmdrive" />
+	<mongo:db-factory id="mongo" host="10.1.79.17" port="27017" dbname="opmdrive" username="hnguyen283" password="langthuy"/>
 
 	<bean id="mongoOperation" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
