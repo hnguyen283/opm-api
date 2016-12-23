@@ -68,60 +68,81 @@ public class Data extends Profile  {
 	
 	
 	public boolean addChild(Data child){
-		ObjectId IdOb = null;
-		if(child.getId()!=null){
-			IdOb = new ObjectId(child.getId());
-		}else{
-			IdOb = new ObjectId();
-			child.setId(IdOb.toHexString());
+		try{
+			ObjectId IdOb = null;
+			if(child.getId()!=null){
+				IdOb = new ObjectId(child.getId());
+			}else{
+				IdOb = new ObjectId();
+				child.setId(IdOb.toHexString());
+			}
+			if(this.range!=CommonService.DEFAULT_RANGE_FIELD){
+				this.append(child.getObName(),child);
+			}else this.append(child.getObName(),IdOb);
+			child.setParent(this);
+			Boolean result = this.childs.add(child);	
+			for(Data brother : this.childs){
+				child.addBrother(brother);
+			}
+			if(result){
+				logger.debug("Added child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId() + " / " +  IdOb.toHexString());
+				return true;
+			}else 
+			return false;
+		} catch(Exception e){
+			logger.error("ERROR Add child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId());
+			logger.error(e.getMessage());
+			return false;
 		}
-		if(this.range!=CommonService.DEFAULT_RANGE_FIELD){
-			this.append(child.getObName(),child);
-		}else this.append(child.getObName(),IdOb);
-		child.setParent(this);
-		Boolean result = this.childs.add(child);	
-		for(Data brother : this.childs){
-			child.addBrother(brother);
-		}
-		if(result){
-			logger.debug("Added child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId() + " / " +  IdOb.toHexString());
-			return true;
-		}else 
-		return false;
 	}
 	
-	public boolean addChild(Data [] childs){
-		if(isSameObjectType(childs)){
+	public boolean addChild(Object [] childs){
+		String objectName = isSameObjectType(childs);
+		// If all of elements have same object name, result is that name, otherwise is null 
+		if(objectName != null){
 			BasicDBList dbList = new BasicDBList();
-			for(Data child : childs){
+			for(Object childObs : childs){
 				ObjectId IdOb = null;
-				if(child.getId()!=null){
-					IdOb = new ObjectId(child.getId());
-				}else{
-					IdOb = new ObjectId();
-					child.setId(IdOb.toHexString());
-				}
-				if(this.range!=CommonService.DEFAULT_RANGE_FIELD){
-					dbList.add(child);
-				}else dbList.add(IdOb);
-				child.setParent(this);
-				this.childs.add(child);	
-				logger.debug("Added child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId() + " / " +  IdOb.toHexString());
-				for(Data brother : this.childs){
-					child.addBrother(brother);
+				if(childObs instanceof Data){
+					Data child = (Data) childObs;
+					if(child.getId()!=null){
+						IdOb = new ObjectId(child.getId());
+					}else{
+						IdOb = new ObjectId();
+						child.setId(IdOb.toHexString());
+					}
+					if(this.range!=CommonService.DEFAULT_RANGE_FIELD){
+						dbList.add(child);
+					}else dbList.add(IdOb);
+					child.setParent(this);
+					this.childs.add(child);	
+					logger.debug("Added child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId() + " / " +  IdOb.toHexString());
+					for(Data brother : this.childs){
+						child.addBrother(brother);
+					}
+				}else {
+					dbList.add(childObs);
 				}
 			}
-			this.append(childs[0].getObName(), dbList);
+			this.append(objectName, dbList);
 			return true;
 		}else return false;
 	}
 	
-	private boolean isSameObjectType(Data [] childs){
-		for(int i = 0; i < (childs.length - 1) ; i++){
-			if(!(childs[i].getObName().equalsIgnoreCase(childs[i+1].getObName())))
-				return false;
+	private String isSameObjectType(Object [] childsObs){
+		String result = null;
+		for(int i = 0; i < (childsObs.length - 1) ; i++){
+			if(childsObs[i] instanceof Data){				
+				Data child = (Data) childsObs[i];
+				if(result == null) result = child.getObName();
+				else{					
+					if(!(child.getObName().equalsIgnoreCase(result)))
+						return null;
+					else result = child.getObName();
+				}
+			}
 		}
-		return true;
+		return result;
 	}
 		
 	public boolean addBrother(Data brother){
@@ -240,7 +261,7 @@ public class Data extends Profile  {
 				ObjectId objId = (ObjectId) dataRoot.get(CommonService.ID_FIELD);
 				dataRoot.put(CommonService.ID_FIELD,objId.toHexString());
 			}catch(java.lang.ClassCastException castException){
-				castException.printStackTrace();
+				logger.error(castException.getMessage());
 			}
 			return dataRoot;
 		}else {
@@ -263,11 +284,19 @@ public class Data extends Profile  {
 						}
 						dataRoot.put(nameKeySet, basicList);						
 					} else if(objValue instanceof ObjectId){
-						dataRoot.put(nameKeySet,dataRoot.getDataByName(nameKeySet, dataRoot.getChilds()).exportData());
+						try{							
+							dataRoot.put(nameKeySet,dataRoot.getDataByName(nameKeySet, dataRoot.getChilds()).exportData());
+						}catch (NullPointerException e){
+							logger.error(e.getMessage());
+						}
 					}
 				}else{					
 					if(objValue instanceof ObjectId && !nameKeySet.equalsIgnoreCase(CommonService.ID_FIELD)){
-						dataRoot.put(nameKeySet,dataRoot.getDataByName(nameKeySet, dataRoot.getChilds()).exportData());
+						try{
+							dataRoot.put(nameKeySet,dataRoot.getDataByName(nameKeySet, dataRoot.getChilds()).exportData());							
+						}catch (NullPointerException e){
+							logger.error(e.getMessage());
+						}						
 					}
 				}
 			}
@@ -275,7 +304,7 @@ public class Data extends Profile  {
 				ObjectId objId = (ObjectId) dataRoot.get(CommonService.ID_FIELD);
 				dataRoot.put(CommonService.ID_FIELD,objId.toHexString());
 			}catch(java.lang.ClassCastException castException){
-				castException.printStackTrace();
+				logger.error(castException.getMessage());
 			}
 			return dataRoot;
 		}

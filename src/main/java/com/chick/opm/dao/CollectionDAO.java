@@ -25,6 +25,12 @@ import com.mongodb.BasicDBObject;
 @Repository("CollectionDAO")
 public class CollectionDAO extends DAOAbtract implements DAOInter {
 
+	public static final String COLLECTION_NOT_EXISTS="NOT EXISTS";
+	public static final String CAN_NOT_GET_COLLECTION="CAN NOT GET";
+	
+	public static final String SUCCESS="SUCCESS";
+	public static final String FAIL="FAIL";
+	
 	private static final Logger logger = Logger.getLogger(LoadAPI.class);
 	private static CollectionDAO collectionDAO;
 	
@@ -84,16 +90,21 @@ public class CollectionDAO extends DAOAbtract implements DAOInter {
 			basicDBObject = getCurrentMongoOperations().findById(new ObjectId(id), Data.class, collectionName);
 			
 		}catch(java.lang.IllegalArgumentException illegalArgumentException){
-			Query query = new Query();
-			query.addCriteria(Criteria.where(CommonService.ID_FIELD).is(new ObjectId(id)));
-			if(!getCurrentMongoOperations().exists(query, collectionName)){
-				return responeMessageService.toErrorMessage("");
-			}else{
-				basicDBObject = getCurrentMongoOperations().findOne(query, BasicDBObject.class, collectionName);
-			}
+			return deepGetById(id,collectionName);
 		}
 		if(basicDBObject!= null)return ((Data)commonService.ReadConverter(basicDBObject, collectionName));
-		else return responeMessageService.toErrorMessage("");
+		else return deepGetById(id,collectionName);
+	}
+	
+	private Data deepGetById(String id, String collectionName){
+		BasicDBObject basicDBObject = null;
+		Query query = new Query();
+		query.addCriteria(Criteria.where(CommonService.ID_FIELD).is(new ObjectId(id)));
+		if(!getCurrentMongoOperations().exists(query, collectionName)){
+			return responeMessageService.toErrorMessage(CollectionDAO.COLLECTION_NOT_EXISTS);
+		}else{
+			return ((Data)commonService.ReadConverter(getCurrentMongoOperations().findOne(query, BasicDBObject.class, collectionName), collectionName));
+		}
 	}
 
 	/* 
@@ -113,8 +124,34 @@ public class CollectionDAO extends DAOAbtract implements DAOInter {
 			if(object instanceof ArrayList){				
 				ArrayList<Data> result = (ArrayList<Data>) object;				
 				for(Data dataOb: result){
-					System.out.println("Save : " + dataOb.toJson() );
+					logger.info("Save : " + dataOb.toJson() );
 					getCurrentMongoOperations().save(dataOb,dataOb.getObName());
+				}
+				
+				return responeMessageService.toInformationMessage(CollectionDAO.SUCCESS);
+			}else{
+				return responeMessageService.toErrorMessage(CollectionDAO.FAIL);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return responeMessageService.toErrorMessage(e.getMessage());
+		}
+	}	
+
+	/* (non-Javadoc)
+	 * @see com.chick.opm.dao.DAOInter#dropteCollection(java.lang.String)
+	 */
+	@Override
+	public Object dropCollection(Object collection) {
+		try{
+			if(collection instanceof ArrayList){				
+				ArrayList<Data> result = (ArrayList<Data>) collection;				
+				for(Data dataOb: result){
+					logger.info("Remove : " + dataOb.toJson() );
+					Query query = new Query();
+					query.addCriteria(Criteria.where(CommonService.ID_FIELD).is(new ObjectId(dataOb.getId())));
+					getCurrentMongoOperations().remove(query, dataOb.getObName());
 				}
 				
 				return responeMessageService.toInformationMessage("Success");

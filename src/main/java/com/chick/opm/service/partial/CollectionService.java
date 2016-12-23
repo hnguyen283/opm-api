@@ -46,4 +46,9 @@ public class CollectionService implements ServiceStructure{
 		return dao.getById(id, collectionName);		
 	}
 	
+	public Object dropById(String id, String collectionName) {
+		Data data = dao.getById(id, collectionName);	
+		return dao.dropCollection(data.prepareToSave(new ArrayList<>()));	
+	}
+	
 }

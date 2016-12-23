@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.chick.opm.dao.CollectionDAO;
 import com.chick.opm.model.object.Data;
+import com.chick.opm.service.inter.ResponeMessageService;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 
@@ -81,22 +82,29 @@ public class CommonService {
 						list = new BasicDBList();
 						list.addAll((ArrayList) basicDBObject.get(keyName));
 						if(list.size() != 0){
-							Data [] holderList = new Data [list.size()];
+							
+							ArrayList<Object> dataHolder = new ArrayList<Object>();
 							if(list.get(0) instanceof ObjectId){
-								for(int i = 0; i < list.size(); i++){									
-									holderList[i]=dao.getById(((ObjectId)list.get(i)).toHexString(), keyName);
+								for(int i = 0; i < list.size(); i++){				
+									Data child = dao.getById(((ObjectId)list.get(i)).toHexString(), keyName);
+									if(child.getId().equalsIgnoreCase(ResponeMessageServiceImpl.ID)){
+										if(!((String) child.get(ResponeMessageServiceImpl.DETAIL)).equalsIgnoreCase(CollectionDAO.COLLECTION_NOT_EXISTS)){											
+											dataHolder.add(list.get(i));
+										}
+									}else dataHolder.add(child);
 								}
-								data.addChild(holderList);	
+								data.addChild(dataHolder.toArray());	
 							}else if (list.get(0) instanceof HashMap){
 								for(int i = 0; i < list.size(); i++){
 									BasicDBObject objBasic = new BasicDBObject();
 									objBasic.putAll((HashMap) list.get(i));
-									holderList[i] = new CommonService().ReadConverter(objBasic,keyName);
+									dataHolder.add(new CommonService().ReadConverter(objBasic,keyName));
 								}
-								data.addChild(holderList);	
+								data.addChild(dataHolder.toArray());	
 							}else{
 								data.append(keyName,(BasicDBList) basicDBObject.get(keyName));
 							}
+							
 						}
 					}catch(java.lang.ClassCastException castException){
 						data.append(keyName,(ArrayList) basicDBObject.get(keyName));
@@ -104,7 +112,13 @@ public class CommonService {
 						data.append(keyName,basicDBObject.get(keyName));
 					}
 				}else if (obj instanceof ObjectId){
-					data.addChild(dao.getById(((ObjectId)obj).toHexString(), keyName));		
+					Data child = dao.getById(((ObjectId)obj).toHexString(), keyName);
+					//If this collection is not exists, We remove it in data
+					if(child.getId().equalsIgnoreCase(ResponeMessageServiceImpl.ID)){
+						if(!((String) child.get(ResponeMessageServiceImpl.DETAIL)).equalsIgnoreCase(CollectionDAO.COLLECTION_NOT_EXISTS)){
+							data.append(keyName, basicDBObject.get(keyName));
+						}
+					}else data.addChild(child);		
 				}else if (obj instanceof HashMap){					
 					BasicDBObject objBasic = new BasicDBObject();
 					objBasic.putAll((HashMap) obj);

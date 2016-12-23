@@ -17,13 +17,13 @@ import com.chick.opm.service.inter.ResponeMessageService;
 @Service("ResponeMessageService")
 public class ResponeMessageServiceImpl implements ResponeMessageService{
 	
-	private static final String ID = "MESSAGE";
-	private static final String TYPE = "MESSAGE_TYPE";
-	private static final String DETAIL = "MESSAGE_DETAIL";
+	public static final String ID = "MESSAGE";
+	public static final String TYPE = "MESSAGE_TYPE";
+	public static final String DETAIL = "MESSAGE_DETAIL";
 	
-	private static final String ERROR_MESSAGE_LABEL = "ERROR_MESSAGE";
-	private static final String WARMING_MESSAGE_LABEL = "WARMING_MESSAGE";
-	private static final String INFORMATION_MESSAGE_LABEL = "INFORMATION_MESSAGE";
+	public static final String ERROR_MESSAGE_LABEL = "ERROR_MESSAGE";
+	public static final String WARMING_MESSAGE_LABEL = "WARMING_MESSAGE";
+	public static final String INFORMATION_MESSAGE_LABEL = "INFORMATION_MESSAGE";
 	
 	private static Data messageData = null;	
 	
