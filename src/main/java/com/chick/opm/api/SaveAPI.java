@@ -56,8 +56,9 @@ public class SaveAPI {
 	public Object ByName(@RequestBody Object dataReq,@PathVariable("name") String name) {
 		if(dataReq != null){
 			Date Start = new Date();  
-			if(dataReq instanceof BasicDBObject){
-				BasicDBObject data = (BasicDBObject) dataReq;
+			if(dataReq instanceof HashMap){
+				BasicDBObject data = new BasicDBObject();
+				data.putAll(((HashMap)dataReq));				
 				Data dataOb = commonService.ReadConverter(data, name);
 				Object ob = collectionService.save(dataOb);
 				Date End = new Date();

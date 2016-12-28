@@ -131,7 +131,7 @@ public class Data extends Profile  {
 	
 	private String isSameObjectType(Object [] childsObs){
 		String result = null;
-		for(int i = 0; i < (childsObs.length - 1) ; i++){
+		for(int i = 0; i < childsObs.length; i++){
 			if(childsObs[i] instanceof Data){				
 				Data child = (Data) childsObs[i];
 				if(result == null) result = child.getObName();
