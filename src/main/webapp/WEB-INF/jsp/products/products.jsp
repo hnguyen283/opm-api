@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="/WEB-INF/jsp/template/header.jsp"></jsp:include>
 	
@@ -19,7 +19,7 @@
 				</div>
 			</div>			
 			<div class="row">
-				<jsp:include page="/WEB-INF/jsp/home/main-content.jsp"></jsp:include>
+				<jsp:include page="/WEB-INF/jsp/products/airConditionerChiller.jsp"></jsp:include>
 				<jsp:include page="/WEB-INF/jsp/template/ver-navigation.jsp"></jsp:include>
 			</div>
 		</div>
