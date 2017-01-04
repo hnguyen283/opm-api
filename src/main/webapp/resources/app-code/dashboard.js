@@ -64,8 +64,5 @@ $(document).ready(function() {
 						"#bodyNew", 0, currenPoint);
 				$("#preloading").addClass("loaded");
 			});
-});
-$(window).on('load', function() { 
 	$.a_jquery_function();
-	
 });
