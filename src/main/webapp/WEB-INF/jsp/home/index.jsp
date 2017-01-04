@@ -10,14 +10,7 @@
 <body class="option1">
 	<div class="container">
 		<div class="container-fluid">
-			<jsp:include page="/WEB-INF/jsp/template/hor-navigation.jsp"></jsp:include>
-			<div class="row">
-				<div class="col-md-12">
-					<ol class="breadcrumb">
-					  <li><a href="">Home</a></li>
-					</ol>
-				</div>
-			</div>			
+			<jsp:include page="/WEB-INF/jsp/template/hor-navigation.jsp"></jsp:include>						
 			<div class="row">
 				<jsp:include page="/WEB-INF/jsp/home/main-content.jsp"></jsp:include>
 				<jsp:include page="/WEB-INF/jsp/template/ver-navigation.jsp"></jsp:include>

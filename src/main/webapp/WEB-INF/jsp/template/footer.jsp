@@ -14,29 +14,31 @@
 								data-target="#myModal"> <span class="text">Live chat</span><span
 								class="fa fa-comments-o icon"></span></a> <span
 								class="fa fa-mobile icon" style="padding-left: 20px"></span> <span
-								class="text">Hotline: 0918998566</span>
+								class="text">Hotline: 0168 629 0668</span>
 	
 						</div>
 						<div class="divdiachi">
 							<ul
 								style="padding: 0; margin: 0; list-style-type: none; line-height: 18px;">
-								<li><b>CÔNG TY TNHH THƯƠNG MẠI VÀ DỊCH VỤ SINH THỊNH</b></li>
+								<li><b>CÔNG TY TNHH HOÀI TÍNH </b></li>
 								<li><i class="fa fa-map-marker" style="font-size: 14px"></i>
-									Số 5, Lô S1, Khu Dân Cư An Hoà 2, Phường An Bình, Biên Hoà, Đồng
-									Nai</li>
+									Số 8 Đường số 2, Kp 4, P.Linh Chiểu, Q.Thủ Đức. Tp.HCM </li>
 								<li><i class="fa fa-phone-square" style="font-size: 14px"></i>
-									+84-613830787 – 3830600</li>
-	
+									+84.8.37225881</li>	
 								<li><i class="fa fa-fax" style="font-size: 14px"></i>
-									+84-613830883</li>
+									+84.8.37225882</li>
+								<li><i class="fa fa-map-marker" style="font-size: 14px"></i>
+									Lô T2-4 đường D1, Khu CNC Quận 9, Tp.HCM </li>
+								<li><i class="fa fa-phone-square" style="font-size: 14px"></i>
+									+84.8.22530885</li>										
+								<li>Mã số thuế: 0311730182</li>
 								<li><i class="fa fa-envelope-o" style="font-size: 14px"></i>
-									info@sinhthinh.com - sinhthinh@gmail.com</li>
+									dennyour@gmail.com</li>
 							</ul>
 						</div>
 						<div class="text">
-							<p>Sinh Thịnh chuyên cung cấp Hệ thống lạnh công nghiệp,
-								chiller, máy sấy khí, bảo trì hệ thống lạnh, cung cấp thiết bị
-								lạnh, phụ tùng lạnh,.. ....</p>
+							<p>Công ty Hoài Tín  thành lập năm 2012, nằm trong khu công nghệ cao thành phố HCM. 
+							Chuyên phục vụ các xí nghiệp về ngành nhựa ở thị trường Việt Nam, liên kết hiệp hội nhựa Shen Zhen,...</p>
 						</div>
 	
 					</div>

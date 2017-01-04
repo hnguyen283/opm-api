@@ -18,4 +18,9 @@ public class HomeController {
 	public String AdminUser(ModelMap model) {	
 		return "home/index";
 	}
+	
+	@RequestMapping(value = "/service", method = RequestMethod.GET)
+	public String Service(ModelMap model) {	
+		return "service/service";
+	}
 }

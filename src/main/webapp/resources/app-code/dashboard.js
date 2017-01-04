@@ -19,15 +19,39 @@ $(document).ready(function() {
 	}
 	
 	function getProducts() {
-		var template = ""
 		var pathname = window.location.pathname;
 		if(pathname.indexOf("wc")!=-1){
-			
+			var products_by_type = getProductsByType("wc");
+			return genCards(products_by_type);
 		}else if(pathname.indexOf("ac")!=-1){
-			
+			var products_by_type = getProductsByType("ac");
+			return genCards(products_by_type);
 		}else{
-			
+			return genCards(products);
 		}
+	}
+	
+	function getProductsByType(type) {
+		var results = [];	
+		for(var i = 0; i < products.length;i++){
+			if(products[i].type.toLowerCase() === type.toLowerCase()){
+				results.push(products[i]);
+			}
+		}
+		return results;
+	}
+	
+	function genCards(dataIn) {
+		var results = "";	
+		for(var i = 0; i < dataIn.length;i++){
+			var imageSRC = base_URL + "/resources/images/products/" + dataIn[i].image;
+			var productURL = base_URL + "/product/detail/" + dataIn[i].code;
+//			var template = "<div class=\"col-md-3\"><div class=\"card\"><div class=\"card-image\"><img class=\"img-responsive\" src=\"" + imageSRC + "\"><span class=\"card-title\">" + dataIn[i].title + "</span></div><div class=\"card-content\"><p>" + dataIn[i].title + "</p></div><div class=\"card-action\"><a href=\"product/detail/"+ dataIn[i].code + "\" target=\"new_blank\">Chi tiết</a></div></div></div>"
+			var template = "<div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\"><div class=\"card\"><div class=\"card-image\"><img class=\"img-responsive\" src=\"" + imageSRC + "\"><span class=\"card-title\"></span></div><div class=\"card-content\"><p>" + dataIn[i].title + "</p></div><div class=\"card-action\"><a href=\""+ base_URL + "/product/detail/" + dataIn[i].code + "\">Chi tiết</a></div></div></div>"
+//			var template = "<div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\"><div class=\"card\"><div class=\"card-image\"><div class=\"image\"><div class=\"img-overflow\"><a href=\""+ productURL + "\" title=\""+ dataIn[i].title + "\"><img src=\"" + imageSRC + "\"></a><div class=\"ImageOverlay\"></div><div class=\"CStyle\"><ul class=\"function\"></ul></div></div></div><span class=\"card-title\"></span></div><div class=\"card-content\"><p>" + dataIn[i].title + "</p></div><div class=\"card-action\"><a href=\""+ productURL + "\">Chi tiết</a></div></div></div>"
+			results = results + template;
+		}
+		return results;
 	}
 
 	$(".product_click").click(

@@ -38,7 +38,7 @@
 	<div class="header-top">
         <div class="container">
             <div class="header-address hidden-xs">
-                <i class="fa fa-map-marker"></i>  <span>Số 5 Lô S1, Khu Dân Cư An Hòa 2 ,Phường An Bình , Biên Hòa , Đồng Nai</span>
+                <i class="fa fa-map-marker"></i>  <span>Số 8 Đường số 2, Kp 4, P.Linh Chiểu, Q.Thủ Đức. Tp.HCM</span>
             </div>
             <div class="pull-right">
                 <ul class="list-inline">
