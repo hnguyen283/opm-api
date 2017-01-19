@@ -23,4 +23,8 @@ public class HomeController {
 	public String Service(ModelMap model) {	
 		return "service/service";
 	}
+	@RequestMapping(value = "/print", method = RequestMethod.GET)
+	public String print(ModelMap model) {	
+		return "home/template";
+	}
 }

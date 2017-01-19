@@ -486,3 +486,16 @@ footer .before_last_section .container .row, footer .last_section .container .ro
 	color: #ffd8a6;
 	text-decoration: none;
 }
+
+.table {
+	margin-bottom: 500px;
+}
+.page {
+	padding : 10px
+} 
+.button-print {
+	position:fixed;
+    bottom:5px;
+    right:5px;
+    z-index: 9999;
+}
