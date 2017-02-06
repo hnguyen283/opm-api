@@ -53,7 +53,7 @@ public class DropAPI {
 		Date Start = new Date();  
 		Map map = ((Data) collectionService.dropById(id, dataName)).exportData().toMap();
 		Date End = new Date();
-		logger.debug((End.getTime() - Start.getTime()));
+		logger.debug("time done process : " + (End.getTime() - Start.getTime()));
 		return map;
 	}
 	
@@ -66,7 +66,7 @@ public class DropAPI {
 			datas.add(arrayData.get(i).exportData().toMap());
 		}
 		Date End = new Date();
-		logger.debug("debug: " + (End.getTime() - Start.getTime()));
+		logger.debug("time done process : " + (End.getTime() - Start.getTime()));
 		return datas;
 	}
 }

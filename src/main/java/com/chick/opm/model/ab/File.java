@@ -19,10 +19,10 @@ public abstract class File extends Profile {
 	public String location;
 	public String typeF;
 	public File() {
-		super(null, "file");		
+		super(null, "file", null);		
 	}
 	public File(String size, String location, String typeF) {
-		super(null, "file");
+		super(null, "file", null);
 		this.size = size;
 		this.location = location;
 		this.typeF = typeF;

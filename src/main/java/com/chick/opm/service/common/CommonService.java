@@ -33,6 +33,7 @@ public class CommonService {
 	private CollectionDAO dao;
 	
 	public static final String ID_FIELD = "_id";
+	public static final String PARENT_FIELD = "_parent";
 	public static final String CLASS_FIELD = "_class";
 	public static final String RANGE_FIELD = "_range";
 	
@@ -48,6 +49,9 @@ public class CommonService {
 			if (basicDBObject.containsKey(CLASS_FIELD)){
 				basicDBObject.remove(CLASS_FIELD);				
 			}
+			if (!basicDBObject.containsKey(ID_FIELD)){
+				data.setId((new ObjectId()).toHexString());			
+			}
 			if (basicDBObject.containsKey(RANGE_FIELD)){
 				data.setRange(Integer.parseInt(String.valueOf(basicDBObject.get(RANGE_FIELD))));
 			}else{
@@ -55,27 +59,14 @@ public class CommonService {
 			}
 			for(String keyName : basicDBObject.keySet()){
 				Object obj = basicDBObject.get(keyName);
-				if(keyName.equalsIgnoreCase(CommonService.ID_FIELD)){	
-					try{
-						data.setId(((ObjectId)obj).toHexString());						
-					}catch(java.lang.ClassCastException castException){
-						ObjectId objId = null;
-						if(obj instanceof HashMap){
-							HashMap<String,String> objBasicId =(HashMap<String, String>) obj;
-							objId = new ObjectId(Integer.parseInt(String.valueOf(objBasicId.get("timestamp"))), Integer.parseInt(String.valueOf(objBasicId.get("machineIdentifier"))),Short.parseShort(String.valueOf(objBasicId.get("processIdentifier"))),Integer.parseInt(String.valueOf(objBasicId.get("counter"))));
-						}if(obj instanceof String){
-							objId = new ObjectId(String.valueOf(obj));
-						}else{
-							BasicDBObject objBasicId = BasicDBObject.parse(obj.toString().replaceAll("=", ":"));
-							objId = new ObjectId(Integer.parseInt(String.valueOf(objBasicId.get("timestamp"))), Integer.parseInt(String.valueOf(objBasicId.get("machineIdentifier"))),Short.parseShort(String.valueOf(objBasicId.get("processIdentifier"))),Integer.parseInt(String.valueOf(objBasicId.get("counter"))));
-						}
-						if(objId == null){
-							logger.error("Can not get ID from this field: " + obj.toString() + " in " +  ObName + "collection");
-							objId = new ObjectId();
-							logger.warn("Auto set new id : " + objId.toHexString() + " in " +  ObName + "collection");
-						}
-						data.setId(objId.toHexString());
-					}
+				if(keyName.equalsIgnoreCase(CommonService.ID_FIELD)){
+					
+					data.setId(stringObjectId(obj));	
+					
+				} else if(keyName.equalsIgnoreCase(CommonService.PARENT_FIELD)){
+					
+					data.setParentId(stringObjectId(obj));	
+					
 				} else if(obj instanceof ArrayList){
 					BasicDBList list = null;
 					try{						
@@ -86,7 +77,7 @@ public class CommonService {
 							ArrayList<Object> dataHolder = new ArrayList<Object>();
 							if(list.get(0) instanceof ObjectId){
 								for(int i = 0; i < list.size(); i++){				
-									Data child = dao.getById(((ObjectId)list.get(i)).toHexString(), keyName);
+									Data child = dao.getById( stringObjectId(list.get(i)) , keyName);
 									if(child.getId().equalsIgnoreCase(ResponeMessageServiceImpl.ID)){
 										if(!((String) child.get(ResponeMessageServiceImpl.DETAIL)).equalsIgnoreCase(CollectionDAO.COLLECTION_NOT_EXISTS)){											
 											dataHolder.add(list.get(i));
@@ -112,7 +103,7 @@ public class CommonService {
 						data.append(keyName,basicDBObject.get(keyName));
 					}
 				}else if (obj instanceof ObjectId){
-					Data child = dao.getById(((ObjectId)obj).toHexString(), keyName);
+					Data child = dao.getById( stringObjectId(obj) , keyName);
 					//If this collection is not exists, We remove it in data
 					if(child.getId().equalsIgnoreCase(ResponeMessageServiceImpl.ID)){
 						if(!((String) child.get(ResponeMessageServiceImpl.DETAIL)).equalsIgnoreCase(CollectionDAO.COLLECTION_NOT_EXISTS)){
@@ -140,5 +131,28 @@ public class CommonService {
 			return null;
 		}
 	}	
+	
+	private String stringObjectId(Object obj){
+		try{
+			return ((ObjectId)obj).toHexString();						
+		}catch(java.lang.ClassCastException castException){
+			ObjectId objId = null;
+			if(obj instanceof HashMap){
+				HashMap<String,String> objBasicId =(HashMap<String, String>) obj;
+				objId = new ObjectId(Integer.parseInt(String.valueOf(objBasicId.get("timestamp"))), Integer.parseInt(String.valueOf(objBasicId.get("machineIdentifier"))),Short.parseShort(String.valueOf(objBasicId.get("processIdentifier"))),Integer.parseInt(String.valueOf(objBasicId.get("counter"))));
+			}if(obj instanceof String){
+				objId = new ObjectId(String.valueOf(obj));
+			}else{
+				BasicDBObject objBasicId = BasicDBObject.parse(obj.toString().replaceAll("=", ":"));
+				objId = new ObjectId(Integer.parseInt(String.valueOf(objBasicId.get("timestamp"))), Integer.parseInt(String.valueOf(objBasicId.get("machineIdentifier"))),Short.parseShort(String.valueOf(objBasicId.get("processIdentifier"))),Integer.parseInt(String.valueOf(objBasicId.get("counter"))));
+			}
+			if(objId == null){
+				logger.error("Can not get ID from this field: " + obj.toString());
+				objId = new ObjectId();
+				logger.warn("Auto set new id : " + objId.toHexString());
+			}
+			return objId.toHexString();
+		}
+	}
 
 }

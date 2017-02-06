@@ -25,14 +25,17 @@ public abstract class Profile extends BasicDBObject implements ProfileInter{
 	public String id;
 	@Transient
 	public String obName;
+	@Transient
+	public String parentId;
 	
 	
 	public Profile() {
 	}
 	
-	public Profile(String id, String obName) {
+	public Profile(String id, String obName, String parentId) {
 		this.id = id;
 		this.obName = obName;
+		this.parentId = parentId;
 	}
 	public String getId() {
 		return id;
@@ -49,6 +52,15 @@ public abstract class Profile extends BasicDBObject implements ProfileInter{
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+	
 	
 	
 }

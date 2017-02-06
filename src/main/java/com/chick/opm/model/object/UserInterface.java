@@ -25,10 +25,10 @@ public class UserInterface extends Profile{
 	private Object action;
 	
 	public UserInterface() {
-		super(null, "userInterface");
+		super(null, "userInterface", null);
 	}	
 	public UserInterface(String typeUI, Image imageCover, Image imageIcon, String description, Object action) {
-		super(null, "userInterface");
+		super(null, "userInterface", null);
 		this.typeUI = typeUI;
 		this.imageCover = imageCover;
 		this.imageIcon = imageIcon;

@@ -7,12 +7,39 @@
 <!-- 	This is controller -->
 	<script src="<%=request.getContextPath()%>/resources/app-code/home/home-controller.js"></script>
 </head>
-<body layout="row" ng-controller="HomeController">
-	<div layout="column" layout-fill role="main">
-		<div lazy-scroll="paginationFuntion()" lazy-scroll-trigger="80" >
-			<md-content layout="column">				
-		  	</md-content>   
-	  	</div>
+<body ng-cloak layout="column" ng-controller="HomeController as home">
+  <!-- Container #1 (see wireframe) -->
+  <md-toolbar layout="row" class="md-toolbar-tools">  	
+    <h1>DEMO - jsPDF</h1>
+  </md-toolbar>
+
+  <div flex layout="row" layout-wrap>
+    <md-content flex id="content">
+		<div layout="column">
+		  <div layout="row" layout-align="center center">
+			  <div flex="30">
+			  	<md-card layout layout-padding>
+				  	<img ng-src="{{imagePath}}csc-logo.jpg" alt="">
+          		</md-card>
+			  </div>
+		  </div>
+		  <div layout="row" layout-align="center center">
+			  <div flex="80">
+			  	<canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+				</canvas>
+			  </div>
+		  </div>
+		  <div layout="row">
+			<div flex="100" id="parentIframe" >
+			</div>
+		  </div>
+		</div>
+    </md-content>
+  </div>
+	<div>
+		<div class="btn-group button-print" role="group" aria-label="...">			
+			<md-button ng-click="processPDF();"> Print PDF </md-button>
+			<md-button ng-click="closeIframe();"> Close </md-button>
+		</div>
 	</div>
-  	
 <jsp:include page="/WEB-INF/jsp/template/footer.jsp"></jsp:include>   

@@ -17,10 +17,10 @@ public class Action extends Profile{
 	private String effectElement;
 	
 	public Action() {
-		super(null,"action");
+		super(null,"action", null);
 	}	
 	public Action(String type, String event, String rootElement, String effectElement) {
-		super(null,"action");
+		super(null,"action", null);
 		this.type = type;
 		this.event = event;
 		this.rootElement = rootElement;

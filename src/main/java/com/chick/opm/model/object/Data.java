@@ -42,7 +42,7 @@ public class Data extends Profile  {
 	}
 	
 	public Data(String obName) {
-		super(null, obName);
+		super(null, obName, null);
 		this.childs = new LinkedList<Data>();
 		this.brothers = new LinkedList<Data>();
 	}	
@@ -91,6 +91,25 @@ public class Data extends Profile  {
 			return false;
 		} catch(Exception e){
 			logger.error("ERROR Add child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId());
+			logger.error(e.getMessage());
+			return false;
+		}
+	}
+	
+	public boolean removeChild(Data child){
+		try{
+			this.remove(child.getObName());
+			Boolean result = this.childs.remove(child);
+			for(Data brother : this.childs){
+				brother.getBrothers().remove(child);
+			}
+			if(result){
+				logger.debug("Remove child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId() + " / " +  child.getId());
+				return true;
+			}else 
+			return false;
+		} catch(Exception e){
+			logger.error("ERROR Remove child: " + this.getObName() + "'s " + child.getObName() + " / " + child.getId());
 			logger.error(e.getMessage());
 			return false;
 		}
@@ -225,6 +244,8 @@ public class Data extends Profile  {
 	}
 
 	public void setParent(Data parent) {
+		this.parentId = parent.getId();
+		this.put(CommonService.PARENT_FIELD, new ObjectId(this.parentId));
 		this.parent = parent;
 	}
 
@@ -252,17 +273,25 @@ public class Data extends Profile  {
 			this.put(CommonService.ID_FIELD, id);
 		}
 		super.setId(id);
-	}		
+	}	
 	
+	@Override
+	public void setParentId(String parentId) {
+		try{
+			this.put(CommonService.PARENT_FIELD, new ObjectId(parentId));
+		}catch(java.lang.IllegalArgumentException ex){
+			this.put(CommonService.PARENT_FIELD, parentId);
+		}
+		super.setParentId(parentId);
+	}
+
 	public Data exportData(){
 		Data dataRoot = this;
 		if(dataRoot.isLeaf()){
-			try{
-				ObjectId objId = (ObjectId) dataRoot.get(CommonService.ID_FIELD);
-				dataRoot.put(CommonService.ID_FIELD,objId.toHexString());
-			}catch(java.lang.ClassCastException castException){
-				logger.error(castException.getMessage());
-			}
+			
+			dataRoot.put(CommonService.ID_FIELD,objectToStringId(dataRoot.get(CommonService.ID_FIELD)));
+			dataRoot.put(CommonService.PARENT_FIELD,objectToStringId(dataRoot.get(CommonService.PARENT_FIELD)));
+
 			return dataRoot;
 		}else {
 			ArrayList<String> listNameOfArrays = this.getListNameOfArrays();
@@ -300,32 +329,14 @@ public class Data extends Profile  {
 					}
 				}
 			}
-			try{
-				ObjectId objId = (ObjectId) dataRoot.get(CommonService.ID_FIELD);
-				dataRoot.put(CommonService.ID_FIELD,objId.toHexString());
-			}catch(java.lang.ClassCastException castException){
-				logger.error(castException.getMessage());
-			}
+			
+			dataRoot.put(CommonService.ID_FIELD,objectToStringId(dataRoot.get(CommonService.ID_FIELD)));
+			dataRoot.put(CommonService.PARENT_FIELD,objectToStringId(dataRoot.get(CommonService.PARENT_FIELD)));
+			
 			return dataRoot;
 		}
 		
 	}
-	
-//	private HashMap<String, ArrayList<Data>> analystChild(Data dataRoot){
-//		HashMap<String, ArrayList<Data>> analystMap = new HashMap<String, ArrayList<Data>>();
-//		for(Data dataChild : dataRoot.childs){
-//			if(!analystMap.containsKey(dataChild.getObName())){
-//				ArrayList<Data> listTemp = new ArrayList<Data>(); 
-//				listTemp.add(dataChild);
-//				analystMap.put(dataChild.getObName(),listTemp);
-//			}else{
-//				System.out.println("Before add - analystChild: " + analystMap.get(dataChild.getObName()).size());
-//				analystMap.get(dataChild.getObName()).add(dataChild); 
-//				System.out.println("After add - analystChild: " + analystMap.get(dataChild.getObName()).size());
-//			}			
-//		}
-//		return analystMap;
-//	}
 	
 	private ArrayList<String> getListNameOfArrays(){
 		ArrayList<String> arrayLists = new ArrayList<>();
@@ -368,5 +379,69 @@ public class Data extends Profile  {
 		this.range = range;
 	}
 	
+//	public boolean isSame(Data data){
+//		for(String dataElement : data.keySet()){
+//			Object objElement = this.get(dataElement);
+//			if(objElement instanceof ArrayList){
+//				arrayLists.add(keySetChild);
+//			}else{
+//				
+//			}
+//		}
+//	}
+	
+	public ArrayList<Data> getLeafs(ArrayList<Data> list){
+		if(this.isLeaf()){
+			list.add(this);
+			return list;
+		} else {
+			for(Data node: this.getChilds()){
+				node.getLeafs(list);
+			}
+			return list;
+		} 
+	}
+	
+	public ArrayList<Data> removeLeafs(ArrayList<Data> list){
+		if(this.isLeaf()){
+			return list;
+		} else {
+			for(Data node: this.getChilds()){
+				node.removeLeafs(list);
+			}
+			list.add(this);
+			if(this.isRoot())
+				list.add(this);
+			return list;
+		} 
+	}
+	
+	public Data getQuerry(boolean isNeedId){
+		if(this.isLeaf()){
+			if(this.getId()!=null && !isNeedId){
+				this.remove(CommonService.ID_FIELD);
+				this.setId(null);
+			}
+			return this;
+		} else {
+			for(Data node: this.getChilds()){
+				node.getQuerry(isNeedId);
+			}
+			return this;
+		} 
+	}		
+	
+	private String objectToStringId(Object obj){
+		try{
+			ObjectId objId = (ObjectId) obj;
+			return objId.toHexString();			
+		}catch(java.lang.ClassCastException castException){
+			logger.error(castException.getMessage());
+			return null;
+		}catch(java.lang.NullPointerException nullException){
+			logger.warn(nullException.getMessage());
+			return null;
+		}
+	}
 	
 }

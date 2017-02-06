@@ -87,7 +87,7 @@ public class SaveAPI {
 						}
 					}
 					Date End = new Date();
-					logger.debug((End.getTime() - Start.getTime()));					
+					logger.debug("time done process : " + (End.getTime() - Start.getTime()));					
 					return result;
 				}catch (Exception e){
 					return responeMessageService.toErrorMessage(e.getMessage()).toMap();

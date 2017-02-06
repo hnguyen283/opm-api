@@ -12,4 +12,9 @@ public interface DAOInter {
 	public Object saveCollection(Object object);
 	public Data getById(String id, String collectionName);
 	public Object dropCollection(Object collection);
+	/**
+	 * @param querry
+	 * @return
+	 */
+	Object getCollectionByQuery(Data querry,boolean isNeedId);
 }

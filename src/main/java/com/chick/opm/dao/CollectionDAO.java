@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -69,6 +70,18 @@ public class CollectionDAO extends DAOAbtract implements DAOInter {
 		List<BasicDBObject> dbs = getCurrentMongoOperations().findAll(BasicDBObject.class, collectionName);
 		for(BasicDBObject data: dbs){
 			db.add((Data)commonService.ReadConverter(data, collectionName));
+		}
+		return db;
+	}
+	
+	@Override
+	public Object getCollectionByQuery(Data query, boolean isNeedId) {
+		List<Data> db = new ArrayList<Data>();
+		BasicQuery Bquery = new BasicQuery(query.getQuerry(isNeedId).toJson());
+		logger.debug("Querry: " + Bquery.toString());
+		List<BasicDBObject> dbs = getCurrentMongoOperations().find(Bquery, BasicDBObject.class, query.getObName());
+		for(BasicDBObject data: dbs){
+			db.add((Data)commonService.ReadConverter(data, query.getObName()));
 		}
 		return db;
 	}

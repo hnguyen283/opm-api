@@ -4,7 +4,7 @@
  * 
  */
 "use strict";
-var opmApp = angular.module('opmApp', ['ngRoute','ngMaterial','lazy-scroll','directiveModule','commonModule']);
+var opmApp = angular.module('opmApp', ['ngRoute','ngMaterial','lazy-scroll','directiveModule','commonModule','chart.js']);
 
 opmApp.config(['$routeProvider',
                     function($routeProvider) {
