@@ -33,7 +33,7 @@ public class OPMConfiguration{
 	private static final String databaseName = "opmdrive";
 	private static final String mongoPass = "langthuy";
 	
-	private static final String mongoHostServer = "10.1.72.215";
+	private static final String mongoHostServer = "10.1.86.52";
 	private static final String mongoHostLocal = "localhost";
 	private static final int mongoPort = 27017;
 	

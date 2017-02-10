@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html ng-app="opmApp">
+<html ng-app="opmApp" class="mdc-typography">
 <head>
 <script type="text/javascript">	var base_URL = "<%=request.getContextPath()%>";</script>
 
@@ -11,6 +11,8 @@
 
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/css/angular-material/angular-material.css" />
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/css/material-components-web.css" />
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/resources/css/custom.css" />
 <link type="text/css" rel="stylesheet"
@@ -31,10 +33,11 @@
 	
 	<!-- Angular Material Library -->
 	<script type="text/javascript"src="<%=request.getContextPath()%>/resources/js/angular-material.js"></script>
+	<script type="text/javascript"src="<%=request.getContextPath()%>/resources/js/material-components-web.js"></script>
 	<script type="text/javascript"src="<%=request.getContextPath()%>/resources/js/angular-ui-router.js"></script>
 	
 	<script src="<%=request.getContextPath()%>/resources/app-code/app.js"></script>
 	<script src="<%=request.getContextPath()%>/resources/app-code/directive.js"></script>
 	<script src="<%=request.getContextPath()%>/resources/app-code/common-service.js"></script>
-	<script src="<%=request.getContextPath()%>/resources/app-code/print/print-controller.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/app-code/print/print-core.js"></script>
 	

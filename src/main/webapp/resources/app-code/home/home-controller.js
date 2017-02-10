@@ -5,12 +5,13 @@
  */
 "use strict";
 
-opmApp.controller("HomeController", ['commonService','$rootScope','$scope','$mdSidenav','$compile','$q',
-function(commonService,$rootScope,$scope,$mdSidenav,$compile,$q){	
+opmApp.controller("HomeController", ['commonService','printService','$rootScope','$scope','$mdSidenav','$compile','$q',
+function(commonService,printService,$rootScope,$scope,$mdSidenav,$compile,$q){	
 	
 	var homeController = this;
 	$scope.name = 'HomeController';
 	$scope.commonService = commonService;
+	$scope.printService = printService;
 	
 	$scope.imagePath = 'resources/images/';
 	$scope.iframeHTML = undefined;
@@ -23,16 +24,17 @@ function(commonService,$rootScope,$scope,$mdSidenav,$compile,$q){
 	};	
 	
 	$scope.processPDF = function processPDF(){			
-		$scope.prepareIframe().then(function(){
-			var html = loadPage('resources/templates/demo.html');
-			$scope.importDataIframeHTML(html);
-		});
+//		$scope.prepareIframe().then(function(){
+//			var html = loadPage('resources/templates/demo.html');
+//			$scope.importDataIframeHTML(html);
+//		});
+		
+		$scope.printService.printPDF(document.getElementById("parentIframe"),'resources/templates/demo.html',$scope.contacts, $scope);
 		
 	}
 	
 	$scope.closeIframe = function closeIframe(){			
-		$("iframe#iframePDF").remove();
-		$("iframe#iframeHTML").remove();
+		$scope.printService.closeIframe();
 	}
 	
 	$scope.prepareIframe = function prepareIframe(){
@@ -43,7 +45,7 @@ function(commonService,$rootScope,$scope,$mdSidenav,$compile,$q){
 			var iframe = document.createElement('iframe');
 			if($scope.isDesignMode){			
 				iframe.setAttribute('style','width:' + ($(window).width() -20) +'px; height:780px;top: 10px;left: 10px;position: absolute;');
-			}else iframe.setAttribute('style','width:2160px; height:780px;visibility: hidden;');
+			}else iframe.setAttribute('style','width:1080px; height:780px;visibility: hidden;');
 			iframe.setAttribute('id','iframeHTML');
 			document.getElementById("parentIframe").appendChild(iframe);
 			$scope.iframeHTML = $("iframe#iframeHTML")[0].contentDocument;

@@ -8,7 +8,7 @@
 	<script src="<%=request.getContextPath()%>/resources/app-code/home/home-controller.js"></script>
 </head>
 <body ng-cloak layout="column" ng-controller="HomeController as home">
-  <!-- Container #1 (see wireframe) -->
+<!-- Container #1 (see wireframe)  -->
   <md-toolbar layout="row" class="md-toolbar-tools">  	
     <h1>DEMO - jsPDF</h1>
   </md-toolbar>
@@ -20,6 +20,28 @@
 			  <div flex="30">
 			  	<md-card layout layout-padding>
 				  	<img ng-src="{{imagePath}}csc-logo.jpg" alt="">
+          		</md-card>
+			  </div>
+		  </div>
+		  <div layout="row" layout-align="center center">
+			  <div flex="50">
+			  	<md-card layout layout-padding>
+				  	<div class="mdc-textfield mdc-textfield--upgraded">
+					  <input type="text" id="pre-filled" class="mdc-textfield__input" value="Pre-filled value">
+					  <label class="mdc-textfield__label mdc-textfield__label--float-above" for="pre-filled">
+					    Label in correct place
+					  </label>
+					</div>
+          		</md-card>
+			  </div>
+  			  <div flex="50">
+			  	<md-card layout layout-padding>
+				  	<div class="mdc-textfield mdc-textfield--upgraded">
+					  <input type="text" id="pre-filled" class="mdc-textfield__input" value="Pre-filled value">
+					  <label class="mdc-textfield__label mdc-textfield__label--float-above" for="pre-filled">
+					    Label in correct place
+					  </label>
+					</div>
           		</md-card>
 			  </div>
 		  </div>
@@ -38,8 +60,8 @@
   </div>
 	<div>
 		<div class="btn-group button-print" role="group" aria-label="...">			
-			<md-button ng-click="processPDF();"> Print PDF </md-button>
-			<md-button ng-click="closeIframe();"> Close </md-button>
+			<button class="mdc-button mdc-button--raised" ng-click="processPDF();">Print PDF</button>
+			<button class="mdc-button mdc-button--raised" ng-click="closeIframe();">Close</button>
 		</div>
 	</div>
 <jsp:include page="/WEB-INF/jsp/template/footer.jsp"></jsp:include>   
